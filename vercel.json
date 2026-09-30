@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/match-reminders",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/tournament-start",
+      "schedule": "* * * * *"
+    }
+  ]
+}

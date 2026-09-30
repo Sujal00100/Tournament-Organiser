@@ -1,0 +1,54 @@
+import { type NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
+import {
+  AUTH_REQUIRED_PATTERNS,
+  ADMIN_REQUIRED_PATTERNS,
+  PUBLIC_ONLY_PATTERNS,
+  ROUTES,
+} from "@/lib/constants";
+
+const COOKIE_NAME = "auth_token";
+
+function getSecret(): Uint8Array {
+  return new TextEncoder().encode(process.env.JWT_SECRET ?? "fallback-secret");
+}
+
+async function getUserFromCookie(request: NextRequest): Promise<{ userId: string } | null> {
+  const token = request.cookies.get(COOKIE_NAME)?.value;
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, getSecret());
+    if (!payload.sub) return null;
+    return { userId: payload.sub };
+  } catch {
+    return null;
+  }
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const user = await getUserFromCookie(request);
+
+  // Redirect logged-in users away from login/signup
+  if (PUBLIC_ONLY_PATTERNS.some((p) => pathname.startsWith(p)) && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = ROUTES.DASHBOARD;
+    return NextResponse.redirect(url);
+  }
+
+  // Protect authenticated routes
+  if (AUTH_REQUIRED_PATTERNS.some((p) => pathname.startsWith(p)) && !user) {
+    const url = request.nextUrl.clone();
+    url.pathname = ROUTES.LOGIN;
+    url.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|uploads|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+};
