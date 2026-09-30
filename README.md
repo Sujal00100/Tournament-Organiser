@@ -1,38 +1,34 @@
 # 🏆 Tournament Organizer
 
-A modern, full-featured web platform for organizing, hosting, and tracking competitive tournaments across eSports and sports. Built with **Next.js 16 (App Router)**, **TypeScript**, **MongoDB Atlas**, **Supabase**, and **Tailwind CSS**.
+A fast, lightweight web platform for organizing, hosting, and tracking competitive tournaments across eSports and sports. Built with **Next.js 16 (App Router)**, **TypeScript**, **MongoDB Atlas (Mongoose)**, and **Tailwind CSS**.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-- **🏆 Bracket & Tournament Engine**:
-  - **Single Elimination** (Automatic seeding & progression)
-  - **Double Elimination** (Winner & Loser brackets)
+- **🏆 Dynamic Bracket Engine**:
+  - **Single Elimination** (Automatic bracket generation & progression)
+  - **Double Elimination** (Winners & Losers bracket tracking)
   - **Round Robin** (Points table, wins/draws/losses)
   - **Group Stage + Knockout** (Custom groups & playoff qualification)
 
-- **👤 Auth & User Roles**:
-  - Host vs. Player roles
-  - Quick Guest demo login
-  - User profiles with custom avatars & handles
+- **👤 Zero-Friction Guest Identity System**:
+  - **No Password/Email Required**: Quick onboarding by selecting a username.
+  - **Cookie-Based Sessions**: Fast identity persistence using secure HTTP cookies (`arena_uid` & `arena_name`) backed by MongoDB.
+  - **Tournament Host Distinction**: Creator-based authorization for tournament hosts.
 
 - **⚡ Realtime Match Management**:
-  - Dynamic score updates & winner declaration
-  - Automated bracket progression upon match completion
-  - System & Web Push notifications for upcoming matches
+  - Dynamic score reporting and match verification
+  - Automated bracket advancement upon match completion
+  - System and browser notification center
 
-- **📊 Leaderboards & Analytics**:
-  - Global player rankings based on tournament performance
+- **📊 Leaderboards & Player Stats**:
+  - Global rankings calculated from tournament placements
   - Win/Loss rates, total matches played, and history tracking
 
-- **🛡️ Admin & Moderation**:
-  - Host controls for dispute resolution & score overrides
-  - Detailed Audit Logging for administrative actions
-
-- **🎨 Modern Responsive UI**:
-  - Sleek dark/light theme support powered by `next-themes`
-  - Fully mobile-responsive layout built with Tailwind CSS & Shadcn UI
+- **🎨 Modern Dark UI**:
+  - Sleek dark/light theme switcher powered by `next-themes`
+  - Responsive layout optimized for mobile and desktop
 
 ---
 
@@ -40,7 +36,8 @@ A modern, full-featured web platform for organizing, hosting, and tracking compe
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router & Server Actions)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Database**: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (Mongoose ODM) & [Supabase](https://supabase.com/) (SQL Migrations & RLS)
+- **Database**: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) with Mongoose ODM (No SQL/Supabase runtime dependency)
+- **Authentication**: Cookie-based Guest Identity (`cookies()` + MongoDB User store)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) & Lucide Icons
 - **Testing**: [Vitest](https://vitest.dev/) (Unit tests) & [Playwright](https://playwright.dev/) (E2E tests)
 
@@ -52,7 +49,7 @@ A modern, full-featured web platform for organizing, hosting, and tracking compe
 
 - **Node.js**: v18.x or later
 - **npm**: v9.x or later
-- **MongoDB**: Atlas Cluster URI or local MongoDB instance
+- **MongoDB**: Atlas Cluster URI or local MongoDB instance (`localhost:27017`)
 
 ---
 
@@ -74,12 +71,12 @@ npm install
 Create a `.env.local` file in the root directory:
 
 ```env
-# MongoDB Atlas Connection
+# MongoDB Atlas Connection String
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/tournament-organizer?retryWrites=true&w=majority
 
-# Secret Keys
-JWT_SECRET=your-32-character-secret-key-here
-CRON_SECRET=your-cron-secret-key-here
+# App Secrets
+JWT_SECRET=dev-jwt-secret-min32chars
+CRON_SECRET=dev-cron-secret
 ```
 
 ### 4. Run Development Server
@@ -88,7 +85,7 @@ CRON_SECRET=your-cron-secret-key-here
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -111,14 +108,13 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 ```text
 ├── src/
 │   ├── actions/          # Next.js Server Actions (Auth, Tournaments, Matches, Admin)
-│   ├── app/              # Next.js App Router Pages & API Routes
-│   ├── components/       # UI Components & Layouts (Header, Sidebar, Modals)
-│   ├── hooks/            # Custom React Hooks (Realtime, Auth, Notifications)
-│   ├── lib/              # Database Models, Bracket Algorithms & Utilities
-│   └── providers/        # React Context Providers (Theme, Auth, Notifications)
-├── supabase/             # Database SQL Migrations & RLS Policies
-├── tests/                # Unit & E2E Test Suites
-└── public/               # Static Assets & Service Workers
+│   ├── app/              # App Router Pages & API Routes
+│   ├── components/       # UI Components & Layouts
+│   ├── hooks/            # Custom React Hooks (Realtime, Notifications)
+│   ├── lib/              # MongoDB Models, Bracket Algorithms & Guest Auth
+│   └── providers/        # Theme & App Providers
+├── tests/                # Vitest & Playwright Test Suites
+└── public/               # Static Assets & Service Worker
 ```
 
 ---
