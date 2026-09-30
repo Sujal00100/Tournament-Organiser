@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏆 Tournament Organizer
 
-## Getting Started
+A modern, full-featured web platform for organizing, hosting, and tracking competitive tournaments across eSports and sports. Built with **Next.js 16 (App Router)**, **TypeScript**, **MongoDB Atlas**, **Supabase**, and **Tailwind CSS**.
 
-First, run the development server:
+---
+
+## ✨ Features
+
+- **🏆 Bracket & Tournament Engine**:
+  - **Single Elimination** (Automatic seeding & progression)
+  - **Double Elimination** (Winner & Loser brackets)
+  - **Round Robin** (Points table, wins/draws/losses)
+  - **Group Stage + Knockout** (Custom groups & playoff qualification)
+
+- **👤 Auth & User Roles**:
+  - Host vs. Player roles
+  - Quick Guest demo login
+  - User profiles with custom avatars & handles
+
+- **⚡ Realtime Match Management**:
+  - Dynamic score updates & winner declaration
+  - Automated bracket progression upon match completion
+  - System & Web Push notifications for upcoming matches
+
+- **📊 Leaderboards & Analytics**:
+  - Global player rankings based on tournament performance
+  - Win/Loss rates, total matches played, and history tracking
+
+- **🛡️ Admin & Moderation**:
+  - Host controls for dispute resolution & score overrides
+  - Detailed Audit Logging for administrative actions
+
+- **🎨 Modern Responsive UI**:
+  - Sleek dark/light theme support powered by `next-themes`
+  - Fully mobile-responsive layout built with Tailwind CSS & Shadcn UI
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router & Server Actions)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Database**: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (Mongoose ODM) & [Supabase](https://supabase.com/) (SQL Migrations & RLS)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & Lucide Icons
+- **Testing**: [Vitest](https://vitest.dev/) (Unit tests) & [Playwright](https://playwright.dev/) (E2E tests)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js**: v18.x or later
+- **npm**: v9.x or later
+- **MongoDB**: Atlas Cluster URI or local MongoDB instance
+
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Sujal00100/Tournament-Organiser.git
+cd Tournament-Organiser
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+# MongoDB Atlas Connection
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/tournament-organizer?retryWrites=true&w=majority
+
+# Secret Keys
+JWT_SECRET=your-32-character-secret-key-here
+CRON_SECRET=your-cron-secret-key-here
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧪 Running Tests
 
-## Learn More
+- **Run Unit Tests (Vitest)**:
+  ```bash
+  npm run test:unit
+  ```
 
-To learn more about Next.js, take a look at the following resources:
+- **Run End-to-End Tests (Playwright)**:
+  ```bash
+  npx playwright test
+  ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
 
-## Deploy on Vercel
+```text
+├── src/
+│   ├── actions/          # Next.js Server Actions (Auth, Tournaments, Matches, Admin)
+│   ├── app/              # Next.js App Router Pages & API Routes
+│   ├── components/       # UI Components & Layouts (Header, Sidebar, Modals)
+│   ├── hooks/            # Custom React Hooks (Realtime, Auth, Notifications)
+│   ├── lib/              # Database Models, Bracket Algorithms & Utilities
+│   └── providers/        # React Context Providers (Theme, Auth, Notifications)
+├── supabase/             # Database SQL Migrations & RLS Policies
+├── tests/                # Unit & E2E Test Suites
+└── public/               # Static Assets & Service Workers
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
